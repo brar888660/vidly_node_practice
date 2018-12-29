@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     const movie = await Movie.findOne({_id : req.params.id});
      if (!movie) {
-        res.status(400).sned('resource not find');
+        res.status(400).send('resource not find');
         return ;
     }
     res.send(movie);
@@ -64,7 +64,7 @@ router.put('/:id', async (req, res) => {
         );
 
     if (!movie) {
-        res.status(400).sned('resource not find');
+        res.status(400).send('resource not find');
         return ;
     }
      res.send(movie);
@@ -74,7 +74,7 @@ router.delete('/:id', async (req, res) => {
     const movie = await Movie.findOneAndDelete({_id : req.params.id});
 
     if (!movie) {
-        res.status(400).sned('resource not find');
+        res.status(400).send('resource not find');
         return ;
     }
      res.send(movie);
