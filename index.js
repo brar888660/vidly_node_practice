@@ -1,4 +1,5 @@
 const Joi = require('joi');
+Joi.objectId = require('joi-objectid')(Joi);
 const express = require('express');
 
 const mongoose = require('mongoose');
@@ -12,6 +13,7 @@ app.use(express.json());
 app.use('/api/genres', require('./routes/genres'));
 app.use('/api/customers', require('./routes/customers'));
 app.use('/api/movies', require('./routes/movies'));
+app.use('/api/rentals', require('./routes/rentals'));
 
 const port = process.env.PORT || 3000;
 

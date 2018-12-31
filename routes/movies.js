@@ -24,20 +24,22 @@ router.get('/:id', async (req, res) => {
 
 
 router.post('/', async (req, res) => {
-    const {errors} = validate(req.body);
-    if (errors) {
+
+
+    const {error} = validate(req.body);
+    if (error) {
         res.status(404).send(error.details[0].message);
         return ;
     }
 
-    let movie = new Movie({
+    const movie = new Movie({
         title : req.body.title,
         genre : await getGenreById(req.body.genreId),
         numberInStock : req.body.numberInStock,
         dailyRentalRate : req.body.dailyRentalRate
     });
 
-    movie = await movie.save();
+    await movie.save();
     res.send(movie);
 
 });
@@ -46,33 +48,29 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
 
-    const {errors} = validate(req.body);
-    if (errors) {
+    const {error} = validate(req.body);
+
+    if (error) {
         res.status(404).send(error.details[0].message);
         return ;
     }
-
-    const movie = await Movie.findOneAndUpdate({
-        _id : req.params.id},
-        {
-            title : req.body.title,
-            genre : await getGenreById(req.body.genreId),
-            numberInStock : req.body.numberInStock,
-            dailyRentalRate : req.body.dailyRentalRate
-        },
-        {new:true}
-        );
+    const movie = await Movie.findOne({_id : req.params.id});
 
     if (!movie) {
-        res.status(400).send('resource not find');
+        res.status(400).send('resource not find....');
         return ;
     }
-     res.send(movie);
+
+    movie.title = req.body.title;
+    movie.genre = await getGenreById(req.body.genreId);
+    movie.numberInStock = req.body.numberInStock;
+    movie.dailyRentalRate = req.body.dailyRentalRate;
+
+    res.send(await movie.save());
 });
 
 router.delete('/:id', async (req, res) => {
     const movie = await Movie.findOneAndDelete({_id : req.params.id});
-
     if (!movie) {
         res.status(400).send('resource not find');
         return ;
@@ -82,7 +80,12 @@ router.delete('/:id', async (req, res) => {
 
 async function getGenreById(id)
 {
-    return await Genre.findOne( {_id : id});
+    const genre = await Genre.findOne( {_id : id});
+
+    return {
+        _id : genre._id,
+        name : genre.name,
+    }
 }
 
 module.exports = router;

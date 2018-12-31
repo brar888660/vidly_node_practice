@@ -6,11 +6,6 @@ const mongoose = require('mongoose');
 
 const {Genre, validate} = require('../models/genre');
 
-
-
-
-
-
 router.get('/', async (req, res) => {
     const genres = await Genre.find().sort('name');
     res.send(genres);
@@ -29,7 +24,7 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
 
 
-    const {error} = validateGenre(req.body);
+    const {error} = validate(req.body);
     if (error) {
         res.status(404).send(error.details[0].message);
         return;
@@ -46,7 +41,7 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) =>{
 
-    const {error} = validateGenre(req.body);
+    const {error} = validate(req.body);
     if (error) {
         res.status(404).send(error.details[0].message);
         return ;
