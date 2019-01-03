@@ -1,3 +1,5 @@
+require('express-async-errors');
+const winston = require('winston');
 const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi);
 const express = require('express');
@@ -8,6 +10,9 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/vidly', { useNewUrlParser: true })
  .then(() => console.log('connecting to mongo db....'))
  .catch((error) => console.log('cou not  connect to mongo db....'));
+
+
+winston.add(new winston.transports.File({filename : 'logfile.log'}));
 
 const app = express();
 
