@@ -9,7 +9,6 @@ const mongoose = require('mongoose');
 const {Genre, validate} = require('../models/genre');
 
 router.get('/', async (req, res, next) => {
-    throw new Error('Could not get the genre.');
     const genres = await Genre.find().sort('name');
     res.send(genres);
 });
