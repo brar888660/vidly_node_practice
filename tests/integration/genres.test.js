@@ -4,7 +4,6 @@ const {Genre} = require('../../models/genre');
 const mongoose = require('mongoose');
 const {User} = require('../../models/user');
 
-const winston = require('winston');
 const db = require('../../db');
 
 let app;

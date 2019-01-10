@@ -10,7 +10,7 @@ require('./startup/routes')(app);
 
 require('./startup/config')();
 require('./startup/validation')();
-
+require('./startup/prod')(app);
 module.exports = app;
 
 
